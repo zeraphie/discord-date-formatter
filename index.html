@@ -222,7 +222,7 @@
           formatForDiscord(datetime)
         );
 
-        const { register, watch } = useForm();
+        const { register, watch } = ReactHookForm.useForm();
 
         const date = watch("date");
         const time = watch("time");
