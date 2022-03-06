@@ -179,6 +179,8 @@
     <script src="https://unpkg.com/moment@2.29.1/min/moment.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-hook-form@7.27.1/dist/index.umd.js" crossorigin></script>
     <script>
+      const html = htm.bind(React.createElement);
+      
       function formatForDiscord(date, format = null) {
         let formatted = `<t:${date.unix()}`;
 
@@ -238,7 +240,7 @@
           }
         }, [date, time, format]);
 
-        return (
+        return html`
           <div className="card">
             <h1>Convert Date/Time to Discord Time</h1>
             <p>
@@ -313,7 +315,7 @@
               </span>
             </div>
           </div>
-        );
+        `;
       }
 
       ReactDOM.render(<App />, document.getElementById("app"));
