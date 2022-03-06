@@ -256,13 +256,13 @@
               <div className="full-width">
                 <input
                   type="date"
-                  defaultValue={datetime.format("YYYY-MM-DD")}
-                  {...register("date")}
+                  defaultValue=${datetime.format("YYYY-MM-DD")}
+                  ${...register("date")}
                 />
                 <input
                   type="time"
-                  defaultValue={datetime.format("HH:mm")}
-                  {...register("time")}
+                  defaultValue=${datetime.format("HH:mm")}
+                  ${...register("time")}
                 />
               </div>
               <select {...register("format")}>
@@ -270,25 +270,25 @@
                   Select format for discord
                 </option>
                 <option value="f">
-                  Short date time ({renderForDiscord(datetime, "f")})
+                  Short date time (${renderForDiscord(datetime, "f")})
                 </option>
                 <option value="F">
-                  Long date time ({renderForDiscord(datetime, "F")})
+                  Long date time (${renderForDiscord(datetime, "F")})
                 </option>
                 <option value="d">
-                  Short date ({renderForDiscord(datetime, "d")})
+                  Short date (${renderForDiscord(datetime, "d")})
                 </option>
                 <option value="D">
-                  Long date ({renderForDiscord(datetime, "D")})
+                  Long date (${renderForDiscord(datetime, "D")})
                 </option>
                 <option value="t">
-                  Short time ({renderForDiscord(datetime, "t")})
+                  Short time (${renderForDiscord(datetime, "t")})
                 </option>
                 <option value="T">
-                  Long time ({renderForDiscord(datetime, "T")})
+                  Long time (${renderForDiscord(datetime, "T")})
                 </option>
                 <option value="R">
-                  Relative time ({renderForDiscord(datetime, "R")})
+                  Relative time (${renderForDiscord(datetime, "R")})
                 </option>
               </select>
             </form>
@@ -296,7 +296,7 @@
             <div className="divider"></div>
 
             <p>Copy everything in the green box and paste it into discord</p>
-            <pre>{discordFormat}</pre>
+            <pre>${discordFormat}</pre>
 
             <div className="divider"></div>
 
@@ -309,9 +309,9 @@
               The date is{" "}
               <span
                 className="discord-date"
-                dataDate={renderForDiscord(datetime, "F")}
+                dataDate=${renderForDiscord(datetime, "F")}
               >
-                {renderForDiscord(datetime, format)}
+                ${renderForDiscord(datetime, format)}
               </span>
             </div>
           </div>
