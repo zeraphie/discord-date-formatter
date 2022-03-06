@@ -257,15 +257,15 @@
                 <input
                   type="date"
                   defaultValue="${datetime.format("YYYY-MM-DD")}"
-                  ${...register("date")}
+                  ...${register("date")}
                 />
                 <input
                   type="time"
                   defaultValue="${datetime.format("HH:mm")}"
-                  ${...register("time")}
+                  ...${register("time")}
                 />
               </div>
-              <select ${...register("format")}>
+              <select ...${register("format")}>
                 <option value="" disabled>
                   Select format for discord
                 </option>
