@@ -1,6 +1,321 @@
 <!DOCTYPE html>
 <html>
-<body>
-<div id="app"></div>
-</body>
+  <head>
+    <style>
+      body {
+         margin: 0;
+         font-family: Helvetica, sans-serif;
+         font-size: 1rem;
+         color: rgba(0, 0, 0, 0.87);
+         letter-spacing: 0.4px;
+         line-height: 20px;
+      }
+       #app {
+         position: relative;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         background: #e7ebf0;
+         min-height: 100vh;
+      }
+       .card {
+         background: white;
+         box-shadow: #000 0px 2px 1px -1px, #000 0px 1px 1px 0px, #000 0px 1px 3px 0px;
+         box-sizing: border-box;
+         padding: 32px;
+         border-radius: 4px;
+         max-width: 520px;
+         margin: 32px;
+      }
+       .card h1 {
+         margin: 0 0 16px 0;
+         font-size: 1.5rem;
+         font-weight: normal;
+      }
+       .card p {
+         margin: 0 0 16px 0;
+      }
+       .card p:last-of-type {
+         margin-bottom: 0;
+      }
+       .card input, .card select {
+         border-style: solid;
+         border-color: #0c8;
+         border-width: 2px;
+         border-radius: 4px;
+         width: 100%;
+         max-width: 100%;
+         font-size: 1rem;
+         box-sizing: border-box;
+      }
+       .card input {
+         font-family: Helvetica, sans-serif;
+         padding: 6px 7px;
+      }
+       .card select {
+         padding: 8px 4px;
+      }
+       .card code {
+         background: rgba(0, 0, 0, 0.1);
+      }
+       .card pre {
+         box-sizing: border-box;
+         background: #0c8;
+         text-align: center;
+         color: white;
+         padding: 16px;
+         cursor: pointer;
+      }
+       .card .divider {
+         width: 100%;
+         height: 2px;
+         background: #eee;
+         margin: 24px 0;
+      }
+       .card .discord {
+         position: relative;
+         box-sizing: border-box;
+         margin: 16px 0 0 0;
+         padding-left: 72px;
+         padding-top: 15px;
+         padding-bottom: 15px;
+         padding-right: 15px;
+         background: #36393f;
+         color: #dcddde;
+         line-height: 1.375rem;
+      }
+       .card .discord:before {
+         content: "I";
+         position: absolute;
+         left: 15px;
+         height: 40px;
+         width: 40px;
+         border-radius: 100%;
+         background: #0c8;
+         text-align: center;
+         line-height: 40px;
+         margin-top: calc(4px - 0.125rem);
+         font-weight: bold;
+         cursor: pointer;
+      }
+       .card .discord-name {
+         margin-right: 0.25rem;
+         cursor: pointer;
+      }
+       .card .discord-name:hover {
+         text-decoration: underline;
+      }
+       .card .discord-time {
+         font-size: 0.75rem;
+         vertical-align: baseline;
+         color: #72767d;
+      }
+       .card .discord-date {
+         background: rgba(255, 255, 255, 0.06);
+         position: relative;
+         padding: 2px 4px;
+         border-radius: 4px;
+         box-sizing: border-box;
+      }
+       .card .discord-date:before, .card .discord-date:after {
+         opacity: 0;
+         transform: scale(0.95);
+         transition: opacity 0.1s, transform 0.1s cubic-bezier(0.47, 1.64, 0.41, 0.8);
+         will-change: opacity, transform;
+         pointer-events: none;
+         background: #000;
+         box-shadow: #000 0px 2px 1px -1px, #000 0px 1px 1px 0px, #000 0px 1px 3px 0px;
+      }
+       .card .discord-date:hover:before, .card .discord-date:hover:after {
+         opacity: 1;
+      }
+       .card .discord-date:hover:before {
+         transform: scale(1) rotate(45deg);
+      }
+       .card .discord-date:hover:after {
+         transform: scale(1);
+      }
+       .card .discord-date:before {
+         content: "";
+         position: absolute;
+         left: 50%;
+         bottom: calc(100% + 4px);
+         height: 8px;
+         width: 8px;
+         transform: scale(0.98) rotate(45deg);
+      }
+       .card .discord-date:after {
+         content: attr(datadate);
+         position: absolute;
+         left: calc(50% - 124px);
+         bottom: calc(100% + 8px);
+         width: 248px;
+         text-align: center;
+         font-size: 0.8rem;
+         border-radius: 4px;
+         padding-top: 3px;
+         padding-bottom: 3px;
+         font-weight: bold;
+         transform: scale(0.98);
+      }
+       .full-width {
+         display: flex;
+         margin-bottom: 16px;
+         gap: 12px;
+      }
+       @media screen and (max-width: 550px) {
+         .full-width {
+           flex-direction: column;
+           gap: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://cdn.skypack.dev/react-hook-form@7.24.0" crossorigin></script>
+    <script>
+      function formatForDiscord(date, format = null) {
+        let formatted = `<t:${date.unix()}`;
+
+        if (format && typeof format === "string" && format.length > 0) {
+          formatted += `:${format}`;
+        }
+
+        return `${formatted}>`;
+      }
+
+      function renderForDiscord(date, format) {
+        if (format === "F") {
+          return date.format("dddd, MMMM DD, YYYY HH:mm a");
+        }
+
+        if (format === "d") {
+          return date.format("DD/MM/YYYY");
+        }
+
+        if (format === "D") {
+          return date.format("DD MMMM YYYY");
+        }
+
+        if (format === "t") {
+          return date.format("HH:mm");
+        }
+
+        if (format === "T") {
+          return date.format("HH:mm:ss");
+        }
+
+        if (format === "R") {
+          return date.fromNow();
+        }
+
+        return date.format("MMMM DD, YYYY HH:mm");
+      }
+
+      function App() {
+        const [datetime, setDatetime] = React.useState(moment());
+        const [discordFormat, setDiscordFormat] = React.useState(
+          formatForDiscord(datetime)
+        );
+
+        const { register, watch } = useForm();
+
+        const date = watch("date");
+        const time = watch("time");
+        const format = watch("format");
+
+        React.useEffect(async () => {
+          if (date && time && format) {
+            const newDatetime = moment(date + " " + time, "YYYY-MM-DD HH:mm");
+
+            await setDatetime(newDatetime);
+            await setDiscordFormat(formatForDiscord(newDatetime, format));
+          }
+        }, [date, time, format]);
+
+        return (
+          <div className="card">
+            <h1>Convert Date/Time to Discord Time</h1>
+            <p>
+              Discord is able to render date/time in local time with a specific
+              formatting, this tool was made in order to make that process easy to use
+              since I couldn't be bothered to convert dates to epoch everytime
+            </p>
+
+            <div className="divider"></div>
+
+            <p>Enter your local time, the default is the current date/time</p>
+            <form>
+              <div className="full-width">
+                <input
+                  type="date"
+                  defaultValue={datetime.format("YYYY-MM-DD")}
+                  {...register("date")}
+                />
+                <input
+                  type="time"
+                  defaultValue={datetime.format("HH:mm")}
+                  {...register("time")}
+                />
+              </div>
+              <select {...register("format")}>
+                <option value="" disabled>
+                  Select format for discord
+                </option>
+                <option value="f">
+                  Short date time ({renderForDiscord(datetime, "f")})
+                </option>
+                <option value="F">
+                  Long date time ({renderForDiscord(datetime, "F")})
+                </option>
+                <option value="d">
+                  Short date ({renderForDiscord(datetime, "d")})
+                </option>
+                <option value="D">
+                  Long date ({renderForDiscord(datetime, "D")})
+                </option>
+                <option value="t">
+                  Short time ({renderForDiscord(datetime, "t")})
+                </option>
+                <option value="T">
+                  Long time ({renderForDiscord(datetime, "T")})
+                </option>
+                <option value="R">
+                  Relative time ({renderForDiscord(datetime, "R")})
+                </option>
+              </select>
+            </form>
+
+            <div className="divider"></div>
+
+            <p>Copy everything in the green box and paste it into discord</p>
+            <pre>{discordFormat}</pre>
+
+            <div className="divider"></div>
+
+            <p>This is what it should look like in discord</p>
+            <div className="discord">
+              <div>
+                <b className="discord-name">Izzy</b>{" "}
+                <span className="discord-time">Today at 15:37</span>
+              </div>
+              The date is{" "}
+              <span
+                className="discord-date"
+                dataDate={renderForDiscord(datetime, "F")}
+              >
+                {renderForDiscord(datetime, format)}
+              </span>
+            </div>
+          </div>
+        );
+      }
+
+      ReactDOM.render(<App />, document.getElementById("app"));
+    </script>
+  </body>
 </html>
