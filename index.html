@@ -256,16 +256,16 @@
               <div className="full-width">
                 <input
                   type="date"
-                  defaultValue=${datetime.format("YYYY-MM-DD")}
+                  defaultValue="${datetime.format("YYYY-MM-DD")}"
                   ${...register("date")}
                 />
                 <input
                   type="time"
-                  defaultValue=${datetime.format("HH:mm")}
+                  defaultValue="${datetime.format("HH:mm")}"
                   ${...register("time")}
                 />
               </div>
-              <select {...register("format")}>
+              <select ${...register("format")}>
                 <option value="" disabled>
                   Select format for discord
                 </option>
@@ -309,7 +309,7 @@
               The date is{" "}
               <span
                 className="discord-date"
-                dataDate=${renderForDiscord(datetime, "F")}
+                dataDate="${renderForDiscord(datetime, "F")}"
               >
                 ${renderForDiscord(datetime, format)}
               </span>
