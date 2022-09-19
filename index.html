@@ -299,11 +299,9 @@
                   placeholder="Type in a date here"
                   ...${register("datetext")}
                 />
-                <input type="button"
-                  onClick="${(e) => { e.preventDefault(); setValue("datetext", ""); }}}"
-                >
+                <input type="button" onClick="${(e) => { e.preventDefault(); setValue("datetext", ""); }}}">
                   Clear
-                </button>
+                </input>
               </div>
               <div className="full-width">
                 <input
