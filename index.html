@@ -296,13 +296,10 @@
                   type="text"
                   defaultValue=""
                   placeholder="Type in a date here"
-                  {...register("datetext")}
+                  ...${register("datetext")}
                 />
                 <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setValue("datetext", "");
-                  }}
+                  onClick="${(e) => { e.preventDefault(); setValue("datetext", ""); }}}"
                 >
                   Clear
                 </button>
