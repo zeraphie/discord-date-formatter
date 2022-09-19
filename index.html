@@ -54,7 +54,7 @@
          border-radius: 0;
       }
 
-      .card button {
+      .card input[type="button"] {
         border: none;
         background: #08c;
         color: #fff;
@@ -299,7 +299,7 @@
                   placeholder="Type in a date here"
                   ...${register("datetext")}
                 />
-                <button
+                <input type="button"
                   onClick="${(e) => { e.preventDefault(); setValue("datetext", ""); }}}"
                 >
                   Clear
