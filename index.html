@@ -52,9 +52,31 @@
          font-size: 1rem;
          box-sizing: border-box;
       }
+
+      .card button {
+        border: none;
+        background: #08c;
+        color: #fff;
+        padding: 6px 12px;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-family: Helvetica, sans-serif;
+        font-size: 0.9rem;
+      }
+
+      .card button:hover,
+      .card button:focus {
+        outline: none;
+        background: rgba(0, 136, 204, 0.7);
+      }
        .card input {
          font-family: Helvetica, sans-serif;
          padding: 6px 7px;
+      }
+       .card input&[type="text"] {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        font-size: 0.95rem;
       }
        .card select {
          padding: 8px 4px;
@@ -182,6 +204,7 @@
     <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/moment@2.29.1/min/moment.min.js" crossorigin></script>
+    <script src="https://unpkg.com/chrono-node@2.4.1/dist/bundle.js" crossorigin></script>
     <script src="https://unpkg.com/react-hook-form@7.27.1/dist/index.umd.js" crossorigin></script>
     <script>
       const html = htm.bind(React.createElement);
@@ -230,20 +253,30 @@
           formatForDiscord(datetime)
         );
 
-        const { register, watch } = ReactHookForm.useForm();
+        const { register, watch, setValue } = ReactHookForm.useForm();
 
+        const dateText = watch("datetext");
         const date = watch("date");
         const time = watch("time");
         const format = watch("format");
 
         React.useEffect(async () => {
-          if (date && time && format) {
+          const parsedDate = ChronoNode.parseDate(dateText);
+
+          if (parsedDate) {
+            const t = moment(parsedDate);
+
+            await setDatetime(t);
+            await setDiscordFormat(formatForDiscord(t, format));
+            setValue("date", t.format("YYYY-MM-DD"));
+            setValue("time", t.format("HH:mm"));
+          } else if (date && time && format) {
             const newDatetime = moment(date + " " + time, "YYYY-MM-DD HH:mm");
 
             await setDatetime(newDatetime);
             await setDiscordFormat(formatForDiscord(newDatetime, format));
           }
-        }, [date, time, format]);
+        }, [dateText, date, time, format]);
 
         return html`
           <div className="card">
@@ -258,6 +291,22 @@
 
             <p>Enter your local time, the default is the current date/time</p>
             <form>
+              <div className="full-width">
+                <input
+                  type="text"
+                  defaultValue=""
+                  placeholder="Type in a date here"
+                  {...register("datetext")}
+                />
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setValue("datetext", "");
+                  }}
+                >
+                  Clear
+                </button>
+              </div>
               <div className="full-width">
                 <input
                   type="date"
