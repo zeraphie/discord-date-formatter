@@ -261,7 +261,7 @@
         const format = watch("format");
 
         React.useEffect(async () => {
-          const parsedDate = ChronoNode.parseDate(dateText);
+          const parsedDate = chrono.parseDate(dateText);
 
           if (parsedDate) {
             const t = moment(parsedDate);
