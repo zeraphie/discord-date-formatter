@@ -63,6 +63,8 @@
         transition: background 0.2s;
         font-family: Helvetica, sans-serif;
         font-size: 0.9rem;
+        width: auto;
+        max-width: auto;
       }
 
       .card button:hover,
@@ -260,6 +262,11 @@
         const date = watch("date");
         const time = watch("time");
         const format = watch("format");
+        
+        const clearText = e => {
+          e.preventDefault();
+          setValue("datetext", "");
+        };
 
         React.useEffect(async () => {
           const parsedDate = chrono.parseDate(dateText);
@@ -299,7 +306,11 @@
                   placeholder="Type in a date here"
                   ...${register("datetext")}
                 />
-                <input type="button" onClick="${(e) => { e.preventDefault(); setValue("datetext", ""); }}}" value="Clear" />
+                <input
+                  type="button"
+                  onClick="${clearText}"
+                  value="Clear"
+                />
               </div>
               <div className="full-width">
                 <input
