@@ -309,11 +309,13 @@
                 <input
                   type="date"
                   defaultValue="${datetime.format("YYYY-MM-DD")}"
+                  disabled="${!!dateText}
                   ...${register("date")}
                 />
                 <input
                   type="time"
                   defaultValue="${datetime.format("HH:mm")}"
+                  disabled="${!!dateText}
                   ...${register("time")}
                 />
               </div>
